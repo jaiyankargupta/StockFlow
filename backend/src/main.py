@@ -19,15 +19,21 @@ app = FastAPI(
     redoc_url=f"{settings.API_V1_STR}/redoc",
 )
 
-# CORS — allow all origins so ngrok / Vercel / any frontend can reach the API
+# CORS — allow origins from settings or default to all
+origins = [str(origin).strip("/") for origin in settings.BACKEND_CORS_ORIGINS] if settings.BACKEND_CORS_ORIGINS else ["*"]
+allow_credentials = False
+if "*" not in origins:
+    allow_credentials = True
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,  # must be False when allow_origins=["*"]
+    allow_origins=origins,
+    allow_credentials=allow_credentials,
     allow_methods=["*"],
     allow_headers=["*"],
     expose_headers=["*"],
 )
+
 
 # Routers
 app.include_router(api_router, prefix=settings.API_V1_STR)
