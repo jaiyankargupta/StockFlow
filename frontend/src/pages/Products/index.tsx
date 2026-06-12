@@ -208,7 +208,7 @@ export default function ProductsPage() {
                       </p>
                     )}
                   </td>
-                  <td className="px-4 py-3 tabular-nums hidden md:table-cell">
+                  <td className="px-4 py-3 tabular-nums hidden md:table-cell text-neutral-900 dark:text-neutral-100">
                     {formatCurrency(p.price)}
                   </td>
                   <td className="px-4 py-3 hidden sm:table-cell">

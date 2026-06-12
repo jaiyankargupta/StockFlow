@@ -211,7 +211,7 @@ export default function OrdersPage() {
                   <td className="px-4 py-3 text-neutral-500 dark:text-neutral-300">
                     {o.items.length} item{o.items.length !== 1 ? "s" : ""}
                   </td>
-                  <td className="px-4 py-3 text-right font-medium tabular-nums">
+                  <td className="px-4 py-3 text-right font-medium tabular-nums text-neutral-900 dark:text-neutral-100">
                     {formatCurrency(o.total_amount)}
                   </td>
                   <td className="px-4 py-3 text-xs text-neutral-500 dark:text-neutral-300 hidden lg:table-cell">

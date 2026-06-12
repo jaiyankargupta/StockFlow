@@ -125,7 +125,7 @@ export default function InventoryPage() {
                   <td className="px-4 py-3">
                     <StockBadge quantity={p.stock_quantity} />
                   </td>
-                  <td className="px-4 py-3 hidden md:table-cell tabular-nums">
+                  <td className="px-4 py-3 hidden md:table-cell tabular-nums text-neutral-900 dark:text-neutral-100">
                     {formatCurrency(p.price)}
                   </td>
                   <td className="px-4 py-3 text-xs text-neutral-400 hidden lg:table-cell">
