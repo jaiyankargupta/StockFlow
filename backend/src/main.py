@@ -97,3 +97,15 @@ async def generic_exception_handler(request: Request, exc: Exception) -> JSONRes
 @app.get("/health", tags=["health"])
 async def health_check():
     return {"status": "healthy", "service": settings.PROJECT_NAME}
+
+
+# Root route
+@app.get("/")
+async def root():
+    return {
+        "status": "online",
+        "message": "StockFlow Backend API is live and running",
+        "version": "1.0.0",
+        "docs": "/api/v1/docs"
+    }
+
