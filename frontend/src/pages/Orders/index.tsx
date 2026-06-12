@@ -17,7 +17,8 @@ import { Pagination } from "@/components/ui/Pagination";
 import { StatusBadge } from "@/components/shared/StatusBadge";
 import { ExportButton } from "@/components/shared/ExportButton";
 import { useToast } from "@/components/ui/Toast";
-import { formatCurrency, formatDateTime, getErrorMessage } from "@/lib/utils";
+import { formatDateTime, getErrorMessage } from "@/lib/utils";
+import { useCurrency } from "@/context/CurrencyContext";
 import type { OrderStatus } from "@/types";
 
 const orderSchema = z.object({
@@ -46,6 +47,7 @@ const STATUS_OPTIONS = [
 const LIMIT = 20;
 
 export default function OrdersPage() {
+  const { formatCurrency } = useCurrency();
   const [page, setPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState<OrderStatus | "">("");
   const [modalOpen, setModalOpen] = useState(false);
@@ -56,6 +58,11 @@ export default function OrdersPage() {
     status: statusFilter || undefined,
   });
   const { data: customersData } = useCustomers({ limit: 200 });
+
+  const getCustomerName = (id: number) => {
+    const customer = customersData?.data.find((c) => c.id === id);
+    return customer ? customer.name : `#${id}`;
+  };
   const { data: productsData } = useProducts({ limit: 200 });
   const createOrder = useCreateOrder();
   const { success, error } = useToast();
@@ -166,22 +173,22 @@ export default function OrdersPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-neutral-100 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-800/50">
-                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wide">
+                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">
                   Order
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wide hidden sm:table-cell">
+                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide hidden sm:table-cell">
                   Customer
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wide">
+                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">
                   Status
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wide">
+                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">
                   Items
                 </th>
-                <th className="text-right px-4 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wide">
+                <th className="text-right px-4 py-3 text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">
                   Total
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wide hidden lg:table-cell">
+                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide hidden lg:table-cell">
                   Date
                 </th>
               </tr>
@@ -192,22 +199,22 @@ export default function OrdersPage() {
                   key={o.id}
                   className="hover:bg-neutral-50 dark:hover:bg-neutral-800/40 transition-colors"
                 >
-                  <td className="px-4 py-3 font-mono text-xs text-neutral-500">
+                  <td className="px-4 py-3 font-mono text-xs text-neutral-500 dark:text-neutral-300 font-semibold">
                     #{o.id}
                   </td>
                   <td className="px-4 py-3 text-neutral-700 dark:text-neutral-300 hidden sm:table-cell">
-                    #{o.customer_id}
+                    {getCustomerName(o.customer_id)}
                   </td>
                   <td className="px-4 py-3">
                     <StatusBadge status={o.status} />
                   </td>
-                  <td className="px-4 py-3 text-neutral-500">
+                  <td className="px-4 py-3 text-neutral-500 dark:text-neutral-300">
                     {o.items.length} item{o.items.length !== 1 ? "s" : ""}
                   </td>
                   <td className="px-4 py-3 text-right font-medium tabular-nums">
                     {formatCurrency(o.total_amount)}
                   </td>
-                  <td className="px-4 py-3 text-xs text-neutral-400 hidden lg:table-cell">
+                  <td className="px-4 py-3 text-xs text-neutral-500 dark:text-neutral-300 hidden lg:table-cell">
                     {formatDateTime(o.created_at)}
                   </td>
                 </tr>

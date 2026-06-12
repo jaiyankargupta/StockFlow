@@ -98,10 +98,10 @@ export default function CustomersPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-neutral-100 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-800/50">
-                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wide">Name</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wide">Email</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wide hidden md:table-cell">Phone</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wide hidden lg:table-cell">Joined</th>
+                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Name</th>
+                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Email</th>
+                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide hidden md:table-cell">Phone</th>
+                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide hidden lg:table-cell">Joined</th>
                 <th className="px-4 py-3 w-16" />
               </tr>
             </thead>
@@ -113,8 +113,8 @@ export default function CustomersPage() {
                     {c.address && <p className="text-xs text-neutral-400 truncate max-w-[180px]">{c.address}</p>}
                   </td>
                   <td className="px-4 py-3 text-neutral-600 dark:text-neutral-300">{c.email}</td>
-                  <td className="px-4 py-3 text-neutral-500 hidden md:table-cell">{c.phone ?? '—'}</td>
-                  <td className="px-4 py-3 text-xs text-neutral-400 hidden lg:table-cell">{formatDate(c.created_at)}</td>
+                  <td className="px-4 py-3 text-neutral-500 dark:text-neutral-300 hidden md:table-cell">{c.phone ?? '—'}</td>
+                  <td className="px-4 py-3 text-xs text-neutral-500 dark:text-neutral-300 hidden lg:table-cell">{formatDate(c.created_at)}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1 justify-end">
                       <button onClick={() => openEdit(c)} className="p-1.5 rounded hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors"><Pencil className="w-3.5 h-3.5" /></button>

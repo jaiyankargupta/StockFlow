@@ -1,14 +1,14 @@
 import { useDashboard } from "@/hooks/useDashboard";
 import { PageSpinner } from "@/components/ui/Spinner";
 import { StatusBadge } from "@/components/shared/StatusBadge";
-import { formatCurrency, formatRelativeTime } from "@/lib/utils";
+import { formatRelativeTime } from "@/lib/utils";
+import { useCurrency } from "@/context/CurrencyContext";
 import {
   TrendingUp,
   Package,
   Users,
   ShoppingCart,
   AlertTriangle,
-  DollarSign,
 } from "lucide-react";
 import {
   BarChart,
@@ -66,6 +66,14 @@ function StatCard({
 
 export default function DashboardPage() {
   const { data, isLoading, error } = useDashboard();
+  const { currency, formatCurrency } = useCurrency();
+
+  const formatTick = (v: number) => {
+    if (currency === "INR") {
+      return `₹${((v * 83) / 1000).toFixed(0)}k`;
+    }
+    return `$${(v / 1000).toFixed(0)}k`;
+  };
 
   if (isLoading) return <PageSpinner />;
   if (error || !data)
@@ -116,7 +124,7 @@ export default function DashboardPage() {
         <StatCard
           label="Revenue"
           value={formatCurrency(data.total_revenue)}
-          icon={DollarSign}
+          icon={TrendingUp}
           sub={`${formatCurrency(data.revenue_last_30_days)} last 30 days`}
         />
       </div>
@@ -162,7 +170,7 @@ export default function DashboardPage() {
                 tick={{ fontSize: 12 }}
                 axisLine={false}
                 tickLine={false}
-                tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
+                tickFormatter={formatTick}
               />
               <Tooltip
                 formatter={(v: unknown) => formatCurrency(Number(v))}
@@ -232,7 +240,7 @@ export default function DashboardPage() {
                 className="flex items-center justify-between px-5 py-3 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors"
               >
                 <div className="flex items-center gap-4">
-                  <span className="text-xs font-mono text-neutral-400">
+                  <span className="text-xs font-mono text-neutral-500 dark:text-neutral-300 font-semibold">
                     #{order.id}
                   </span>
                   <span className="text-sm text-neutral-700 dark:text-neutral-300">

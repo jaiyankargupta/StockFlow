@@ -36,5 +36,5 @@ COPY . .
 
 EXPOSE 8000
 
-# Use a reasonable worker count for production; uvicorn will be the entrypoint
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]
+# Run database migrations first, then start uvicorn
+CMD ["sh", "-c", "alembic upgrade head && uvicorn src.main:app --host 0.0.0.0 --port 8000 --workers 2"]

@@ -1,6 +1,6 @@
 # Stockflow — Inventory & Order Management
 
-Stockflow is a production-ready inventory and order management system: a full-stack app with a FastAPI + SQLAlchemy backend and a React + TypeScript frontend.
+Stockflow is a inventory and order management system: a full-stack app with a FastAPI + SQLAlchemy backend and a React + TypeScript frontend.
 
 ## Tech stack
 - Backend: Python 3.12, FastAPI, SQLAlchemy, Alembic, Pydantic
@@ -29,27 +29,31 @@ docker compose logs -f backend
 The `docker-compose.yml` runs Alembic migrations at backend startup, so migrations are applied automatically.
 
 ## Pull prebuilt images (Docker Hub)
-If you prefer to use the images I published to Docker Hub, pull and run them instead of building locally:
+If you prefer to use the images published to Docker Hub, you can run them using `docker run` directly:
 
 ```sh
-# pull images
-docker pull jaiyankargupta/stockflow-backend:latest
-docker pull jaiyankargupta/stockflow-frontend:latest
-
-# run the DB (example)
+# 1. Create a common docker network
 docker network create stockflow-net || true
+
+# 2. Start database container
 docker run -d --name stockflow-db --network stockflow-net \
-  -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=inventory_db \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_DB=inventory_db \
   -p 5432:5432 postgres:15-alpine
 
-# run backend (migrations should be run once before starting in some setups):
-# (the image entrypoint already runs migrations in the compose setup)
-docker run -d --name stockflow-backend --network stockflow-net \
-  -e POSTGRES_SERVER=stockflow-db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=inventory_db \
-  -p 8000:8000 jaiyankargupta/stockflow-backend:latest
+# 3. Start backend container (will run migrations automatically on startup)
+docker run -d --name backend --network stockflow-net -p 8000:8000 \
+  -e POSTGRES_SERVER=stockflow-db \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_DB=inventory_db \
+  -e SECRET_KEY=xyz123 \
+  jaiyankargupta/stockflow-backend:latest
 
-# run frontend
-docker run -d --name stockflow-frontend --network stockflow-net -p 80:80 \
+# 4. Start frontend container (linked to the backend container named "backend")
+docker run -d --name frontend --network stockflow-net -p 80:80 \
+  --link backend:backend \
   jaiyankargupta/stockflow-frontend:latest
 ```
 

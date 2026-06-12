@@ -51,8 +51,11 @@ function NavItem({
   );
 }
 
+import { useCurrency } from "@/context/CurrencyContext";
+
 export function Sidebar() {
   const { user, logout } = useAuth();
+  const { currency, toggleCurrency } = useCurrency();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const content = (
@@ -81,6 +84,15 @@ export function Sidebar() {
             </p>
           </div>
         )}
+        <button
+          onClick={toggleCurrency}
+          className="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100 transition-colors w-full mb-1"
+        >
+          <span className="w-4 h-4 flex items-center justify-center font-bold text-xs bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300 rounded-sm">
+            {currency === "INR" ? "₹" : "$"}
+          </span>
+          <span className="truncate">Switch to {currency === "INR" ? "USD ($)" : "INR (₹)"}</span>
+        </button>
         <button
           onClick={logout}
           className="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium text-neutral-600 hover:bg-red-50 hover:text-red-700 dark:text-neutral-400 dark:hover:bg-red-950 dark:hover:text-red-400 transition-colors w-full"

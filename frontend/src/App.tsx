@@ -48,27 +48,31 @@ function ProtectedRoutes() {
   );
 }
 
+import { CurrencyProvider } from "@/context/CurrencyContext";
+
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <ToastProvider>
-          <BrowserRouter>
-            <AxiosInterceptor />
-            <Routes>
-              <Route
-                path="/login"
-                element={
-                  <PublicRoute>
-                    <LoginPage />
-                  </PublicRoute>
-                }
-              />
-              <Route path="/*" element={<ProtectedRoutes />} />
-            </Routes>
-          </BrowserRouter>
-        </ToastProvider>
-      </AuthProvider>
+      <CurrencyProvider>
+        <AuthProvider>
+          <ToastProvider>
+            <BrowserRouter>
+              <AxiosInterceptor />
+              <Routes>
+                <Route
+                  path="/login"
+                  element={
+                    <PublicRoute>
+                      <LoginPage />
+                    </PublicRoute>
+                  }
+                />
+                <Route path="/*" element={<ProtectedRoutes />} />
+              </Routes>
+            </BrowserRouter>
+          </ToastProvider>
+        </AuthProvider>
+      </CurrencyProvider>
     </QueryClientProvider>
   );
 }

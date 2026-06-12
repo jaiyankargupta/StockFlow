@@ -22,7 +22,8 @@ import { SearchBar } from "@/components/shared/SearchBar";
 import { StockBadge } from "@/components/shared/StockBadge";
 import { ExportButton } from "@/components/shared/ExportButton";
 import { useToast } from "@/components/ui/Toast";
-import { formatCurrency, formatDate, getErrorMessage } from "@/lib/utils";
+import { formatDate, getErrorMessage } from "@/lib/utils";
+import { useCurrency } from "@/context/CurrencyContext";
 import type { Product } from "@/types";
 
 const productSchema = z.object({
@@ -41,6 +42,7 @@ type ProductFormData = z.infer<typeof productSchema>;
 const LIMIT = 20;
 
 export default function ProductsPage() {
+  const { formatCurrency } = useCurrency();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
@@ -169,19 +171,19 @@ export default function ProductsPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-neutral-100 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-800/50">
-                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wide">
+                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">
                   SKU
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wide">
+                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">
                   Name
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wide hidden md:table-cell">
+                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide hidden md:table-cell">
                   Price
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wide hidden sm:table-cell">
+                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide hidden sm:table-cell">
                   Stock
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wide hidden lg:table-cell">
+                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide hidden lg:table-cell">
                   Added
                 </th>
                 <th className="px-4 py-3 w-16" />
@@ -193,7 +195,7 @@ export default function ProductsPage() {
                   key={p.id}
                   className="hover:bg-neutral-50 dark:hover:bg-neutral-800/40 transition-colors"
                 >
-                  <td className="px-4 py-3 font-mono text-xs text-neutral-500">
+                  <td className="px-4 py-3 font-mono text-xs text-neutral-500 dark:text-neutral-400">
                     {p.sku}
                   </td>
                   <td className="px-4 py-3">

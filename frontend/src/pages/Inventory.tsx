@@ -3,11 +3,13 @@ import { PageSpinner } from "@/components/ui/Spinner";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Badge } from "@/components/ui/Badge";
 import { StockBadge } from "@/components/shared/StockBadge";
-import { formatCurrency, formatDate, getStockStatus } from "@/lib/utils";
+import { formatDate, getStockStatus } from "@/lib/utils";
+import { useCurrency } from "@/context/CurrencyContext";
 import { AlertTriangle, CheckCircle } from "lucide-react";
 
 export default function InventoryPage() {
   const { data: lowStock, isLoading } = useLowStockProducts(10);
+  const { formatCurrency } = useCurrency();
 
   const critical =
     lowStock?.filter((p) => getStockStatus(p.stock_quantity) === "critical") ??
@@ -84,19 +86,19 @@ export default function InventoryPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-neutral-100 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-800/50">
-                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wide">
+                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">
                   Product
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wide hidden sm:table-cell">
+                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide hidden sm:table-cell">
                   SKU
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wide">
+                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">
                   Stock Status
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wide hidden md:table-cell">
+                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide hidden md:table-cell">
                   Price
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wide hidden lg:table-cell">
+                <th className="text-left px-4 py-3 text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide hidden lg:table-cell">
                   Last Updated
                 </th>
               </tr>
@@ -117,7 +119,7 @@ export default function InventoryPage() {
                       </p>
                     )}
                   </td>
-                  <td className="px-4 py-3 font-mono text-xs text-neutral-500 hidden sm:table-cell">
+                  <td className="px-4 py-3 font-mono text-xs text-neutral-500 dark:text-neutral-400 hidden sm:table-cell">
                     {p.sku}
                   </td>
                   <td className="px-4 py-3">
